@@ -14,7 +14,7 @@ public class MyCircle extends MyGrfObject {
 	@Override
 	void paint(GraphicsContext gc) {
 		super.paint(gc);
-		gc.strokeOval(x1 - radius, y1 - radius, radius * 2, radius * 2);
+		gc.strokeOval(x1 - radius, y1 - radius, radius >> 1, radius * 2);
 	}
 
 	@Override
