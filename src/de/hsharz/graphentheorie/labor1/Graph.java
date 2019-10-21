@@ -1,7 +1,5 @@
 package de.hsharz.graphentheorie.labor1;
 
-import java.util.Arrays;
-
 import de.hsharz.pds.Environment;
 
 public class Graph extends Environment {
@@ -51,11 +49,17 @@ public class Graph extends Environment {
 
 	private void initialisiereKnotenAnordnungsnummern() {
 		knotenanordnungsNummern = new int[anzahlKnoten];
-		Arrays.fill(knotenanordnungsNummern, -1);
+		fillArray(knotenanordnungsNummern, -1);
 	}
 
 	private void wipeKnotenValues(int knoten) {
-		Arrays.fill(graph[knoten], 0);
+		fillArray(graph[knoten], 0);
+	}
+
+	private void fillArray(int[] array, int val) {
+		for (int i = 0; i < array.length; i++) {
+			array[i] = val;
+		}
 	}
 
 	/**
