@@ -32,7 +32,7 @@ public class MyHeader {
 	private boolean areHeaderValuesValid() {
 		boolean headerValid = true;
 
-		if (k != 75 && i != 73) {
+		if (k != 75 || i != 73) {
 			headerValid = false;
 			System.err.println("Fehlerhafte Dateikennung!");
 			Basis.errorBox("Datei enthält falsche Kennung: K: " + k + " I: " + i, "Fehlerhafter Header!");
