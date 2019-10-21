@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 public class MyCanvas extends Canvas {
 
 	private static int MAX = 700;
+	private int width;
+	private int height;
 	private Middleware middleware = null;
 	private List<MyGrfObject> grafikListe;
 
@@ -17,7 +19,16 @@ public class MyCanvas extends Canvas {
 		super(MAX, MAX);
 		this.middleware = new Middleware();
 		this.middleware.readFile(filename);
+		readMiddlewareValues();
+	}
+
+	/**
+	 * Holen der gelesenen Werte der Middleware
+	 */
+	private void readMiddlewareValues() {
 		this.grafikListe = middleware.getGrafikliste();
+		this.width = middleware.getWidth();
+		this.height = middleware.getHeight();
 	}
 
 	public void paint() {
@@ -27,11 +38,12 @@ public class MyCanvas extends Canvas {
 		gc.setFill(Color.WHITE);
 		gc.clearRect(0, 0, MAX, MAX);
 
-		// gc.setStroke(Color.BLACK);
-		// gc.setLineWidth(0.5);
-		// gc.rect(0, 0, middleware.getWidth(), middleware.getHeight());
-		// gc.stroke();
+		// Rahmen zeichnen
+		gc.rect(0, 0, width, height);
+		gc.stroke();
+		gc.beginPath();
 
+		// Grafikobjekte zeichnen
 		for (MyGrfObject graficObject : grafikListe) {
 			graficObject.paint(gc);
 			gc.stroke();
