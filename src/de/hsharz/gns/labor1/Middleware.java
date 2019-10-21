@@ -43,9 +43,12 @@ public class Middleware {
 		try (FileInputStream fin = new FileInputStream(filename); //
 				DataInputStream din = new DataInputStream(fin)) {
 
+			// MyHeader erzeugen
 			MyHeader myHeader = new MyHeader();
 			boolean isHeaderValid = myHeader.loadFromData(din);
 
+			// Wenn der Header gültig ist, sollen die Grafikobjekte eingelesen werden,
+			// die noch in der restlichen Datei enthalten sind
 			if (isHeaderValid) {
 				// Headerwerte holen
 				setValuesOfHeader(myHeader);
@@ -60,21 +63,43 @@ public class Middleware {
 
 	} // readFile
 
+	/**
+	 * Holen und Setzen der Breite und Höhe vom erzeugten MyHeader
+	 * 
+	 * @param myHeader eingelesener MyHeader mit Breite und Höhe
+	 */
 	private void setValuesOfHeader(MyHeader myHeader) {
 		// Header ist gültig. Höhe und Breite holen und setzen
 		this.width = myHeader.getWidth();
 		this.height = myHeader.getHeight();
 	}
 
+	/**
+	 * Einlesen von Grafikobjekten über den gegeben InputStream
+	 * 
+	 * @param din InputStream zum Einlesen von Grafikobjekten
+	 * @throws IOException Fehler beim Lesen
+	 */
 	private void readGraficObjects(DataInputStream din) throws IOException {
 		// Kennung des Grafikobjektes holen und
 		// entsprechendes Objekt erstellen
-		short kennung = 0;
-		while ((kennung = din.readShort()) != 0) {
-			createGraficObject(kennung, din);
+		try {
+			short kennung = 0;
+			while ((kennung = din.readShort()) != 0) {
+				createGraficObject(kennung, din);
+			}
+		} catch (IllegalArgumentException e) {
+			Basis.errorBox(e.getMessage(), "Fehler beim erzeugen des Grafikobjektes!");
 		}
 	}
 
+	/**
+	 * Ergeugen eines Grafikobjektes anhand der gegebenen Kennung
+	 * 
+	 * @param kennung Kennung des zu erzeugenden Objektes
+	 * @param din     InputStream zum Einlesen der Werte für das Grafikobjekt
+	 * @throws IOException Fehler beim Lesen
+	 */
 	private void createGraficObject(short kennung, DataInputStream din) throws IOException {
 
 		MyGrfObject graficObject = null;
@@ -97,8 +122,7 @@ public class Middleware {
 			break;
 		default: // Unbekannte Kennung
 			System.err.println("Falsche Kennung: " + kennung);
-			Basis.errorBox("Unbekannte Kennung: " + kennung, "Fehlerhafte Kennung!");
-			break;
+			throw new IllegalArgumentException("Unbekannte Kennung: " + kennung);
 		}
 
 		if (graficObject != null) {
@@ -106,9 +130,8 @@ public class Middleware {
 
 			if (!validCoordinates) {
 				System.err.println("Negative Koordinaten! " + graficObject.getClass().getSimpleName());
-				Basis.errorBox("Negative Koordinaten beim Lesen von: " + graficObject.getClass().getSimpleName(),
-						"Fehler beim Lesen des Grafikobjektes!");
-				return;
+				throw new IllegalArgumentException(
+						"Negative Koordinaten beim Lesen von: " + graficObject.getClass().getSimpleName());
 			}
 
 			this.grafikliste.add(graficObject);
