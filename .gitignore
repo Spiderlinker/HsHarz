@@ -1,1 +1,5 @@
 /bin/
+*._css
+*._php
+*.~css
+*.~php
