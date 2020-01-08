@@ -1,0 +1,25 @@
+body {
+	color: rgb(2,2,2);
+	background-color:#FAFAFA;
+	font-family: 'Fira Sans', Verdana, sans-serif, Arial, Helvetica;
+	line-height: 1.6;
+	max-width: 40rem;
+	padding:2rem;
+	margin:auto;
+}
+
+
+img {
+	max-width: 100 %;
+}
+
+
+a {
+	color:#FF4444;
+}
+
+
+h1,h2, strong {
+	color:#010101;
+}
+
